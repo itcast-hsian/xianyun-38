@@ -31,7 +31,9 @@
                     <!-- 循环按钮的列表 -->
                     <span
                     v-for="(item, index) in options"
-                    :key="index">
+                    :key="index"
+                    @click="handleTabChange(index)"
+                    :class="{active: current === index}">
                         <i>{{item.text}}</i>
                     </span>
                 </el-row>
@@ -42,7 +44,7 @@
                 align="middle" 
                 class="search-input">
                     <input 
-                    placeholder="请输入城市" />
+                    :placeholder=" options[current].placeholder " />
                     <i class="el-icon-search"></i>
                 </el-row>
             </div>
@@ -70,7 +72,9 @@ export default {
                     text: "机票",
                     placeholder: ""
                 }
-            ]
+            ],
+            // 当前高亮的tab
+            current: 0
         }
     },
     mounted(){
@@ -83,6 +87,18 @@ export default {
         // 赋值data的banners
         this.banners = data;
       })
+    },
+
+    methods: {
+        // 点击切换tab切换
+        handleTabChange(index){
+            // index等于2时候说明点击是机票按钮
+            if(index === 2){
+                this.$router.push("/air")
+            }
+
+            this.current = index;
+        }
     }
 }
 </script>
