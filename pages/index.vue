@@ -28,8 +28,11 @@
                 <el-row 
                 type="flex" 
                 class="search-tab">
-                    <span>
-                        <i>攻略</i>
+                    <!-- 循环按钮的列表 -->
+                    <span
+                    v-for="(item, index) in options"
+                    :key="index">
+                        <i>{{item.text}}</i>
                     </span>
                 </el-row>
                 
@@ -52,7 +55,22 @@ export default {
     data(){
         return {
             // 轮播图数据
-            banners: []
+            banners: [],
+            // 搜索栏的动态数据
+            options: [
+                {
+                    text: "攻略",
+                    placeholder: "搜索城市"
+                },
+                {
+                    text: "酒店",
+                    placeholder: "请输入城市搜索酒店"
+                },
+                {
+                    text: "机票",
+                    placeholder: ""
+                }
+            ]
         }
     },
     mounted(){
