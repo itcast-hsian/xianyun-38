@@ -83,7 +83,8 @@ export default {
                         // this.$store.state.user.userInfo = res.data;
 
                         // 调用mutations下的方法修改userInfo,调用时候传入res.data
-                        this.$store.commit("user/getUserInfo", res.data);
+                        this.$store.commit("user/setUserInfo", res.data);
+
                     })
                     // 错误的处理后面统一处理
                     // }).catch(res => {

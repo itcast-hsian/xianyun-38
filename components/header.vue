@@ -20,9 +20,22 @@
 
             <!-- 登录/用户信息 -->
             <el-row type="flex" align="middle">
-                {{$store.state.user.userInfo.token}}
+                <el-dropdown v-if="$store.state.user.userInfo.token">
+                    <span class="el-dropdown-link">
+                        <!-- 头像 -->
+                        <img :src="$axios.defaults.baseURL + $store.state.user.userInfo.user.defaultAvatar" alt="">
+                        <!-- 昵称 -->
+                        {{ $store.state.user.userInfo.user.nickname }}
+                        <i class="el-icon-arrow-down el-icon--right"></i>
+                    </span>
+                    <el-dropdown-menu slot="dropdown">
+                        <el-dropdown-item>个人中心</el-dropdown-item>
+                        <el-dropdown-item>退出</el-dropdown-item>
+                    </el-dropdown-menu>
+                </el-dropdown>
+
                 <!-- 不存在用户信息展示登录注册链接 -->
-                <nuxt-link to="/user/login" class="account-link">
+                <nuxt-link to="/user/login" class="account-link" v-else>
                     登录 / 注册 
                 </nuxt-link>
             </el-row>
@@ -37,7 +50,7 @@ export default {
     },
     mounted(){
         // 获取store中数据,this.$store.state或访问到store下所有文件，user是其中一个
-        console.log(this.$store.state.user.nickname)
+        
     }
 }
 </script>
