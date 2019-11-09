@@ -20,7 +20,6 @@
 
             <!-- 登录/用户信息 -->
             <el-row type="flex" align="middle">
-
                 <!-- 不存在用户信息展示登录注册链接 -->
                 <nuxt-link to="/user/login" class="account-link">
                     登录 / 注册 

@@ -9,20 +9,24 @@
         :rules="rules" 
         class="form">
 
-        <el-form-item class="form-item">
+        <!-- prop是rule是对象校验字段 -->
+        <el-form-item class="form-item" prop="username">
             <el-input 
-            placeholder="用户名/手机">
+            v-model="form.username"
+            placeholder="用户名/手机"
+            >
             </el-input>
         </el-form-item>
 
-        <el-form-item class="form-item">
+        <el-form-item class="form-item" prop="password">
             <el-input 
+            v-model="form.password"
             placeholder="密码" 
             type="password">
             </el-input>
         </el-form-item>
 
-        <p class="form-text">
+        <p class="form-text" ref="p">
             <nuxt-link to="#">忘记密码</nuxt-link>
         </p>
 
@@ -38,18 +42,50 @@
 
 <script>
 export default {
+    mounted(){
+        // ref用来查找dom的元素
+        // document.querySelector(".form-text").style.background = 'gray'
+        // this.$refs.p.style.background = "blue"
+    },
     data(){
         return {
             // 表单数据
-            form: {},
+            form: {
+                username: "", // 用户名
+                password: ""  // 密码
+            },
             // 表单规则
-            rules: {},
+            rules: {
+                // required必填， message验证不通过时候错误提示，trigger是触发验证的时间
+                username: [
+                    { required: true, message: '请输入用户名', trigger: 'blur' }
+                ],
+                password: [
+                    { required: true, message: '请输入密码', trigger: 'blur' }
+                ],
+            },
         }
     },
     methods: {
         // 提交登录
         handleLoginSubmit(){
-           console.log(this.form)
+            // validate是elementui的form表单的方法，提供一个回调函数校验表单是否通过验证
+            // valid如果值true的话就表示通过
+            this.$refs.form.validate(valid => {
+                if(valid){
+                    this.$axios({
+                        url: "/accounts/login",
+                        method: "POST",
+                        data: this.form
+                    }).then(res => {
+                        
+                    })
+                    // 错误的处理后面统一处理
+                    // }).catch(res => {
+                    //     console.log(res.response)
+                    // })
+                }
+            })
         }
     }
 }
