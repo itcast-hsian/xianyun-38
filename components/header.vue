@@ -20,6 +20,7 @@
 
             <!-- 登录/用户信息 -->
             <el-row type="flex" align="middle">
+                {{$store.state.user.nickname}}
                 <!-- 不存在用户信息展示登录注册链接 -->
                 <nuxt-link to="/user/login" class="account-link">
                     登录 / 注册 
@@ -33,6 +34,10 @@ export default {
     methods: {
         // 用户退出
         handleLogout(){},
+    },
+    mounted(){
+        // 获取store中数据,this.$store.state或访问到store下所有文件，user是其中一个
+        console.log(this.$store.state.user.nickname)
     }
 }
 </script>
