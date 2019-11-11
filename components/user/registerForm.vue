@@ -105,7 +105,7 @@ export default {
     },
     methods: {
         // 发送验证码
-        handleSendCaptcha(){
+        async handleSendCaptcha(){
             // 判断手机号码是否为空
             if(!this.form.username){
                 this.$message.error("手机号码不能为空");
@@ -113,18 +113,34 @@ export default {
             }
 
             // 调用user下的actions发送验证码的方法
-            this.$store.dispatch("user/sendCaptcha", this.form.username).then(code => {
-                // 验证码弹窗
-                this.$message.success("模拟手机返回的验证码：" + code);
-            });
+            // this.$store.dispatch("user/sendCaptcha", this.form.username).then(code => {
+            //     // 验证码弹窗
+            //     this.$message.success("模拟手机返回的验证码：" + code);
+            // });
+
+            // await可以接受promise的返回值
+            const code = await this.$store.dispatch("user/sendCaptcha", this.form.username);
+            // 验证码弹窗
+            this.$message.success("模拟手机返回的验证码：" + code);
         },
 
         // 注册
         handleRegSubmit(){
             // 验证通过
-            this.$refs.form.validate(valid => {
+            this.$refs.form.validate(async valid => {
                 if(valid){
-                    console.log(this.form)
+
+                    // 解构, props是除了checkPassword之外剩下的属性
+                    const {checkPassword, ...props} = this.form;
+                    
+                    // 请求注册的接口
+                    await this.$store.dispatch("user/register",props);
+
+                    // 跳转到首页
+                    this.$router.replace("/");
+
+                    // 弹窗提示
+                    this.$message.success('注册成功');
                 }
             })
            

@@ -51,5 +51,17 @@ export const actions = {
             const {code} = res.data;
             return code;
         })
+    },
+
+    // 注册方法
+    register(store, data){
+        return this.$axios({
+            url: "/accounts/register",
+            method: "POST",
+            data
+        }).then(res => {
+            // 注册完毕之后立即登录
+            store.commit("setUserInfo", res.data);
+        })
     }
 }
