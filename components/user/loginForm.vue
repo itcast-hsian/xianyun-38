@@ -69,14 +69,15 @@ export default {
     methods: {
         // 提交登录
         async handleLoginSubmit(){
-            // 调用actions的方法,this.$store.dispatch
-            await this.$store.dispatch("user/login", this.form);
-
-            // 跳转到首页
-            this.$router.replace("/");
-
-            // 弹窗提示
-            this.$message.success('登录成功');
+            // try/catch里面的代码如果发生了错误，不会影响后面代码的执行
+            try{
+                // 调用actions的方法,this.$store.dispatch
+                await this.$store.dispatch("user/login", this.form);
+                // 跳转到首页
+                this.$router.replace("/");
+                // 弹窗提示
+                this.$message.success('登录成功');
+            }catch(err){}
         }
     }
 }

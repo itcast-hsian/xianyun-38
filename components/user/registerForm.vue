@@ -155,17 +155,21 @@ export default {
             this.$refs.form.validate(async valid => {
                 if(valid){
 
-                    // 解构, props是除了checkPassword之外剩下的属性
-                    const {checkPassword, ...props} = this.form;
-                    
-                    // 请求注册的接口
-                    await this.$store.dispatch("user/register",props);
+                    try {          
+                        // 解构, props是除了checkPassword之外剩下的属性
+                        const {checkPassword, ...props} = this.form;
 
-                    // 跳转到首页
-                    this.$router.replace("/");
+                        // 请求注册的接口
+                        await this.$store.dispatch("user/register",props);
 
-                    // 弹窗提示
-                    this.$message.success('注册成功');
+                        // 跳转到首页
+                        this.$router.replace("/");
+
+                        // 弹窗提示
+                        this.$message.success('注册成功');
+                    } catch (error) {
+                        
+                    }
                 }
             })
            
