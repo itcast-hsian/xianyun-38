@@ -68,30 +68,15 @@ export default {
     },
     methods: {
         // 提交登录
-        handleLoginSubmit(){
-            // validate是elementui的form表单的方法，提供一个回调函数校验表单是否通过验证
-            // valid如果值true的话就表示通过
-            this.$refs.form.validate(valid => {
-                if(valid){
-                    this.$axios({
-                        url: "/accounts/login",
-                        method: "POST",
-                        data: this.form
-                    }).then(res => {
-                        
-                        // 存储数据到store, vuex不能直接修改store的值
-                        // this.$store.state.user.userInfo = res.data;
+        async handleLoginSubmit(){
+            // 调用actions的方法,this.$store.dispatch
+            await this.$store.dispatch("user/login", this.form);
 
-                        // 调用mutations下的方法修改userInfo,调用时候传入res.data
-                        this.$store.commit("user/setUserInfo", res.data);
+            // 跳转到首页
+            this.$router.replace("/");
 
-                    })
-                    // 错误的处理后面统一处理
-                    // }).catch(res => {
-                    //     console.log(res.response)
-                    // })
-                }
-            })
+            // 弹窗提示
+            this.$message.success('登录成功');
         }
     }
 }

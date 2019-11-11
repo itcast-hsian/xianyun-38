@@ -16,5 +16,22 @@ export const mutations = {
     }
 }
 
-// 异步修改state的数据
-// export const actions = {}
+// 异步修改state的数据, 组件的方法共享
+export const actions = {
+    // actions的函数第一个参数是store对象,store这个参数是必须的，
+    // 第二个参数是传入的参数
+    login(store, data){
+        return this.$axios({
+            url: "/accounts/login",
+            method: "POST",
+            data,
+        }).then(res => {
+        
+            // 调用mutations下的方法修改userInfo,调用时候传入res.data
+            // store.commit("user/setUserInfo", res.data);
+
+            // 调用当前模块下的mutations是不需要加上模块名字的
+            store.commit("setUserInfo", res.data);
+        })
+    }
+}
