@@ -30,7 +30,7 @@
                     </span>
                     <el-dropdown-menu slot="dropdown">
                         <el-dropdown-item>个人中心</el-dropdown-item>
-                        <el-dropdown-item>退出</el-dropdown-item>
+                        <el-dropdown-item @click.native="handleLogout">退出</el-dropdown-item>
                     </el-dropdown-menu>
                 </el-dropdown>
 
@@ -46,7 +46,13 @@
 export default {
     methods: {
         // 用户退出
-        handleLogout(){},
+        handleLogout(){
+            // 清空userInfo, 重新初始化store下的userInfo
+            this.$store.commit("user/setUserInfo", {
+                token: "",
+                user: {}
+            })
+        },
     },
     mounted(){
         // 获取store中数据,this.$store.state或访问到store下所有文件，user是其中一个
