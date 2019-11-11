@@ -69,7 +69,7 @@ export default {
     methods: {
         // 提交登录
         async handleLoginSubmit(){
-            // try/catch里面的代码如果发生了错误，不会影响后面代码的执行
+            // try/catch里面的代码如果发生了错误，不会影响try/catch后面代码的执行
             try{
                 // 调用actions的方法,this.$store.dispatch
                 await this.$store.dispatch("user/login", this.form);
