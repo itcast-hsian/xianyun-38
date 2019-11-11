@@ -73,6 +73,29 @@ export default {
             }
         };
 
+        // 校验手机号码
+        const validateUsername = (rule, value, callback) => {
+            // 正常调用（先掌握这个判断）
+            if (value === '') {
+                callback(new Error('请输入用户名'));
+            }else if( !(/^1[3|5|7|8][0-9]{9}/.test(value)) ){
+                callback(new Error('手机号码格式错误'));
+            }else{
+                callback();
+            }
+
+            // 手机号码校验的封装
+            //callback(value(value))
+        }
+
+        // function abc(value){
+        //     if (value === '') {
+        //         return new Error('请输入用户名');
+        //     }else if( !(/^1[3|5|7|8][0-9]{9}/.test(value)) ){
+        //         return new Error('手机号码格式错误');
+        //     }
+        // }
+
         return {
             // 表单数据
             form: {
@@ -85,7 +108,9 @@ export default {
             // 表单规则
             rules: {
                 username: [
-                    { required: true, message: "请输入用户名", trigger: "blur" }
+                    // { required: true, message: "请输入用户名", trigger: "blur" },
+                    // 自定义验证手机号码
+                    { validator: validateUsername, trigger: 'blur' }
                 ],
                 captcha: [
                     { required: true, message: "请输入手机验证码", trigger: "blur" }
