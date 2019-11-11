@@ -4,14 +4,14 @@
         ref="form" 
         :rules="rules" 
         class="form">
-            <el-form-item class="form-item">
+            <el-form-item class="form-item" prop="username">
                 <el-input 
                 v-model="form.username"
                 placeholder="用户名手机">
                 </el-input>
             </el-form-item>
 
-            <el-form-item class="form-item">
+            <el-form-item class="form-item" prop="captcha">
                 <el-input 
                 v-model="form.captcha"
                 placeholder="验证码" >
@@ -23,14 +23,14 @@
                 </el-input>
             </el-form-item>
 
-            <el-form-item class="form-item">
+            <el-form-item class="form-item" prop="nickname">
                 <el-input 
                  v-model="form.nickname"
                 placeholder="你的名字">
                 </el-input>
             </el-form-item>
 
-            <el-form-item class="form-item">
+            <el-form-item class="form-item" prop="password">
                 <el-input 
                  v-model="form.password"
                 placeholder="密码" 
@@ -38,7 +38,7 @@
                 ></el-input>
             </el-form-item>
 
-            <el-form-item class="form-item">
+            <el-form-item class="form-item" prop="checkPassword">
                 <el-input 
                  v-model="form.checkPassword"
                 placeholder="确认密码" 
@@ -56,8 +56,23 @@
 </template>
 
 <script>
+
 export default {
     data(){
+        // 自定义校验函数
+        // rule这个参数用户上。返回校验规则
+        // value 返回输入框的值
+        // callback 是回调函数 ，callback是必须要调用的
+        const validatePass = (rule, value, callback) => {
+            if (value === '') {
+                callback(new Error('请再次输入密码'));
+            } else if (value !== this.form.password) {
+                callback(new Error('两次输入密码不一致!'));
+            } else {
+                callback();
+            }
+        };
+
         return {
             // 表单数据
             form: {
@@ -68,19 +83,51 @@ export default {
                 checkPassword: "" // 确认密码
             },
             // 表单规则
-            rules: {},
+            rules: {
+                username: [
+                    { required: true, message: "请输入用户名", trigger: "blur" }
+                ],
+                captcha: [
+                    { required: true, message: "请输入手机验证码", trigger: "blur" }
+                ],
+                nickname: [
+                    { required: true, message: "请输入昵称", trigger: "blur" }
+                ],
+                password: [
+                    { required: true, message: "请输入密码", trigger: "blur" }
+                ],
+                checkPassword: [
+                    // validator是用来指定自定义的验证函数
+                    { validator: validatePass, trigger: 'blur' }
+                ]
+            },
         }
     },
     methods: {
         // 发送验证码
         handleSendCaptcha(){
+            // 判断手机号码是否为空
+            if(!this.form.username){
+                this.$message.error("手机号码不能为空");
+                return;
+            }
 
+            // 调用user下的actions发送验证码的方法
+            this.$store.dispatch("user/sendCaptcha", this.form.username).then(code => {
+                // 验证码弹窗
+                this.$message.success("模拟手机返回的验证码：" + code);
+            });
         },
-
 
         // 注册
         handleRegSubmit(){
-           console.log(this.form)
+            // 验证通过
+            this.$refs.form.validate(valid => {
+                if(valid){
+                    console.log(this.form)
+                }
+            })
+           
         }
     }
 }

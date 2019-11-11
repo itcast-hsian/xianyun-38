@@ -35,5 +35,21 @@ export const actions = {
             // 调用当前模块下的mutations是不需要加上模块名字的
             store.commit("setUserInfo", res.data);
         })
+    },
+
+    // 发送验证码, tel是手机号码
+    sendCaptcha(store, tel){
+        // 请求手机验证码接口
+        return this.$axios({
+            url: "/captchas",
+            method: "POST",
+            data: {
+                tel
+            }
+        }).then(res => {
+            // code是验证码
+            const {code} = res.data;
+            return code;
+        })
     }
 }
