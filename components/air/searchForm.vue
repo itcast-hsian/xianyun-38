@@ -123,7 +123,8 @@ export default {
         // 出发城市下拉选择时触发
         // item: 选中的下拉列表的数据
         handleDepartSelect(item) {
-            console.log(item)
+            this.form.departCity = item.value;
+            this.form.departCode = item.sort;
         },
 
         // 目标城市下拉选择时触发
