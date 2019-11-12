@@ -4,39 +4,41 @@
             <!-- 显示的机票信息 -->
             <el-row type="flex" align="middle" class="flight-info">
                 <el-col :span="6">
-                    <span>东航 </span> MU5316
+                    <span>{{data.airline_name}} </span> {{ data.flight_no }}
                 </el-col>
                 <el-col :span="12">
                     <el-row type="flex" justify="space-between" class="flight-info-center">
                         <el-col :span="8" class="flight-airport">
-                            <strong>20:30</strong>
-                            <span>白云机场T1</span>
+                            <strong>{{ data.dep_time }}</strong>
+                            <span>{{ data.org_airport_name }} {{ data.org_airport_quay }}</span>
                         </el-col>
                         <el-col :span="8" class="flight-time">
                             <span>2时20分</span>
                         </el-col>
                         <el-col :span="8" class="flight-airport">
-                            <strong>22:50</strong>
-                            <span>虹桥机场T2</span>
+                            <strong>{{ data.arr_time }}</strong>
+                            <span>{{ data.dst_airport_name }} {{ data.dst_airport_quay }}</span>
                         </el-col>
                     </el-row>
                 </el-col>
                 <el-col :span="6" class="flight-info-right">
-                    ￥<span class="sell-price">810</span>起
+                    ￥<span class="sell-price">{{ data.base_price / 2 }}</span>起
                 </el-col>
             </el-row>
         </div>
         <div class="flight-recommend">
             <!-- 隐藏的座位信息列表 , 座位列表也是需要循环-->
-            <el-row type="flex"  justify="space-between" align="middle">
+            <el-row type="flex"  justify="space-between" align="middle"
+            v-for="(item, index) in data.seat_infos"
+            :key="index">
                 <el-col :span="4">低价推荐</el-col>
                 <el-col :span="20">
                     <el-row type="flex" justify="space-between" align="middle" class="flight-sell">
                         <el-col :span="16" class="flight-sell-left">
-                            <span>经济舱</span> | 上海一诺千金航空服务有限公司
+                            <span>{{item.name}}</span> | {{ item.supplierName }}
                         </el-col>
                         <el-col :span="5" class="price">
-                            ￥1345
+                            ￥{{ item.org_settle_price }}
                         </el-col>
                         <el-col :span="3" class="choose-button">
                             <el-button 
@@ -44,7 +46,7 @@
                             size="mini">
                             选定
                             </el-button>
-                            <p>剩余：83</p>
+                            <p>剩余：{{ item.discount }}</p>
                         </el-col>
                     </el-row>
                 </el-col>
@@ -55,15 +57,9 @@
 
 <script>
 export default {
-
-    props: {
-        // 数据
-        data: {
-            type: Object,
-            // 默认是空数组
-            default: {}
-        }
-    }
+    // 声明组件可以接受的属性
+    props: ["data"]
+    
 }
 </script>
 
