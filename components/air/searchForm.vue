@@ -193,7 +193,33 @@ export default {
 
         // 提交表单是触发
         handleSubmit(){
-           console.log(this.form)
+            // 需要验证的表单字段
+            const rules = [
+                { value: this.form.departCity, message: "请输入出发城市" },
+                { value: this.form.destCity, message: "请输入到达城市" },
+                { value: this.form.departDate, message: "请选择出发时间" },
+            ]
+
+            let valid = true;
+            rules.forEach(v => {
+                // 只要有一个条件不满足，终止循环
+                if(!valid) return;
+                // 如果有一个输入框的值是空的
+                if(!v.value){
+                    // 提示错误
+                    this.$alert(v.message, "提示")
+                    valid = false;
+                }
+            })
+
+            // 只要有一个条件不满足，禁止跳转
+            if(!valid) return;
+
+            // 跳转到机票列表页
+            this.$router.push({
+                path: "/air/flights",
+                query: this.form
+            })
         }
     },
     mounted() {
