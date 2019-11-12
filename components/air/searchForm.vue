@@ -23,17 +23,20 @@
                 placeholder="请搜索出发城市"
                 @select="handleDepartSelect"
                 class="el-autocomplete"
+                @blur="handleDepartBlur"
                 ></el-autocomplete>
             </el-form-item>
             
             <el-form-item label="到达城市">
                 <el-autocomplete
+                v-model="form.destCity"
                 :fetch-suggestions="queryDestSearch"
                 placeholder="请搜索到达城市"
                 @select="handleDestSelect"
                 class="el-autocomplete"
                 ></el-autocomplete>
             </el-form-item>
+
             <el-form-item label="出发时间">
                 <!-- change 用户确认选择日期时触发 -->
                 <el-date-picker type="date" 
@@ -73,7 +76,11 @@ export default {
                 destCity: "" , // 目标城市
                 destCode: "",
                 departDate: ""
-            }
+            },
+
+            // 出发城市列表
+            departCities: [],
+            destCities: []
         }
     },
     methods: {
@@ -102,6 +109,39 @@ export default {
                 const {data} = res.data;
 
                 // map循环数组
+                this.departCities = data.map(v => {
+                     v.value = v.name.replace("市", "");
+                    return v;
+                })
+
+                cb(this.departCities)
+            })
+        },
+
+        // 出发城市输入框失去焦点时候触发
+        handleDepartBlur(){
+            // 用于认为输入是正确的，没有选中下拉框，所以需要默认选中第一个
+            this.form.departCity = this.departCities[0].value;
+            this.form.departCode = this.departCities[0].sort;
+        },
+
+        // 到达城市搜索
+        queryDestSearch(value, cb){
+            // 如果输入框数据为空，返回空列表
+            if(!value.trim()){
+                return cb([]);
+            }
+
+            this.$axios({
+                url: "/airs/city",
+                params: { 
+                    name:value
+                }
+            }).then(res => {
+                // data是城市列表
+                const {data} = res.data;
+
+                // map循环数组
                 const newData = data.map(v => {
                      v.value = v.name.replace("市", "");
                     return v;
@@ -111,14 +151,13 @@ export default {
             })
         },
 
-        
-        queryDestSearch(value, cb){
-            cb([
-                {value: 1},
-                {value: 2},
-                {value: 3},
-            ]);
+        // 出发城市输入框失去焦点时候触发
+        handleDestBlur(){
+            // 用于认为输入是正确的，没有选中下拉框，所以需要默认选中第一个
+            this.form.destCity = this.destCities[0].value;
+            this.form.destCode = this.destCities[0].sort;
         },
+
        
         // 出发城市下拉选择时触发
         // item: 选中的下拉列表的数据
@@ -129,7 +168,8 @@ export default {
 
         // 目标城市下拉选择时触发
         handleDestSelect(item) {
-            
+            this.form.destCity = item.value;
+            this.form.destCode = item.sort;
         },
 
         // 确认选择日期时触发
@@ -144,7 +184,7 @@ export default {
 
         // 提交表单是触发
         handleSubmit(){
-           
+           console.log(this.form)
         }
     },
     mounted() {
