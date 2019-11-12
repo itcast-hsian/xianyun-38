@@ -34,6 +34,7 @@
                 placeholder="请搜索到达城市"
                 @select="handleDestSelect"
                 class="el-autocomplete"
+                @blur="handleDestBlur"
                 ></el-autocomplete>
             </el-form-item>
 
@@ -120,6 +121,7 @@ export default {
 
         // 出发城市输入框失去焦点时候触发
         handleDepartBlur(){
+            if(this.departCities.length === 0 ) return;
             // 用于认为输入是正确的，没有选中下拉框，所以需要默认选中第一个
             this.form.departCity = this.departCities[0].value;
             this.form.departCode = this.departCities[0].sort;
@@ -142,17 +144,18 @@ export default {
                 const {data} = res.data;
 
                 // map循环数组
-                const newData = data.map(v => {
+                this.destCities = data.map(v => {
                      v.value = v.name.replace("市", "");
                     return v;
                 })
 
-                cb(newData)
+                cb(this.destCities)
             })
         },
 
         // 出发城市输入框失去焦点时候触发
         handleDestBlur(){
+            if(this.destCities.length === 0 ) return;
             // 用于认为输入是正确的，没有选中下拉框，所以需要默认选中第一个
             this.form.destCity = this.destCities[0].value;
             this.form.destCode = this.destCities[0].sort;
