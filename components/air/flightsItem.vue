@@ -1,6 +1,6 @@
 <template>
     <div class="flight-item">
-        <div>
+        <div @click="isShow = !isShow">
             <!-- 显示的机票信息 -->
             <el-row type="flex" align="middle" class="flight-info">
                 <el-col :span="6">
@@ -26,7 +26,7 @@
                 </el-col>
             </el-row>
         </div>
-        <div class="flight-recommend">
+        <div class="flight-recommend" v-show="isShow">
             <!-- 隐藏的座位信息列表 , 座位列表也是需要循环-->
             <el-row type="flex"  justify="space-between" align="middle"
             v-for="(item, index) in data.seat_infos"
@@ -57,6 +57,11 @@
 
 <script>
 export default {
+    data(){
+        return {
+            isShow: false
+        }
+    },
     // 声明组件可以接受的属性
     props: {
         // data是要传入属性名
