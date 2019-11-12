@@ -13,7 +13,7 @@
                             <span>{{ data.org_airport_name }} {{ data.org_airport_quay }}</span>
                         </el-col>
                         <el-col :span="8" class="flight-time">
-                            <span>2时20分</span>
+                            <span>{{ rankTime }}</span>
                         </el-col>
                         <el-col :span="8" class="flight-airport">
                             <strong>{{ data.arr_time }}</strong>
@@ -64,8 +64,33 @@ export default {
             type: Object,  // 属性的类型
             default: {}     // 如果不传属性采用这个默认值
         }
-    }
-    
+    },
+
+    // computed的属性计算返回值，类似data
+    // computed会监听实例下属性的变化，一旦函数内引用的实例属性发生变化，会重新计算并且返回新的值
+    computed: {
+        rankTime(){
+            // 如果接口还没有请求回来时候，先返回空
+            if(!this.data.arr_time) return "";
+            
+            // 到达时间
+            const arr = this.data.arr_time.split(":"); // [18, 30]
+            const dep = this.data.dep_time.split(":"); // [16, 00]
+
+            // 到达和出发时间转换成分钟
+            const end = arr[0] * 60 + +arr[1];
+            const start = dep[0] * 60 + +dep[1];
+
+            // 间隔分钟
+            const dis = end - start; // 150
+            // 小时
+            const hours = Math.floor(dis / 60)
+            // 分钟
+            const min = dis % 60;
+
+            return `${hours}时${min}分钟`;
+        }
+    },
 }
 </script>
 
