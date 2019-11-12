@@ -92,7 +92,11 @@ export default {
     methods: {
         // tab切换时触发
         handleSearchTab(item, index){
-            
+            if(index === 1){
+                this.$alert("目前暂时不支持往返", "提示", {
+                    type: "warning"
+                })
+            }
         },
         
         // 出发城市输入框的输入事件，根据输入的关键字请求接口返回相关城市。
@@ -188,7 +192,14 @@ export default {
 
         // 触发和目标城市切换时触发
         handleReverse(){
-            
+            // 把form的出发城市和到达城市交叉赋值
+            const {departCity, departCode, destCity, destCode} = this.form;
+
+            this.form.departCity = destCity;
+            this.form.departCode = destCode;
+
+            this.form.destCity = departCity;
+            this.form.destCode = departCode;
         },
 
         // 提交表单是触发
