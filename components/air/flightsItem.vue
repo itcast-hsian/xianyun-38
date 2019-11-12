@@ -58,7 +58,13 @@
 <script>
 export default {
     // 声明组件可以接受的属性
-    props: ["data"]
+    props: {
+        // data是要传入属性名
+        data: {
+            type: Object,  // 属性的类型
+            default: {}     // 如果不传属性采用这个默认值
+        }
+    }
     
 }
 </script>
