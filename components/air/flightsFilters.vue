@@ -50,8 +50,10 @@
                 <!-- 机型大小的选项 -->
                 <el-select size="mini" v-model="airSize" placeholder="机型" @change="handleAirSize">
                     <el-option
-                    label="大"
-                    value="大">
+                    v-for="(item, index) in airSizeList"
+                    :key="index"
+                    :label="item.label"
+                    :value="item.type">
                     </el-option>
                 </el-select>
             </el-col>
@@ -78,6 +80,13 @@ export default {
             flightTimes: "",    // 出发时间
             company: "",        // 航空公司
             airSize: "",        // 机型大小
+
+            // 机型过滤条件列表
+            airSizeList: [
+                {label: "大", type: "L" },
+                {label: "中", type: "M" },
+                {label: "小", type: "S" }
+            ]
         }
     },
     props: {
@@ -127,7 +136,13 @@ export default {
 
          // 选择机型时候触发
         handleAirSize(value){
-           
+           // 过滤符合条件的航班
+            const arr = this.data.flights.filter(v => {
+                return v.plane_size == value;
+            });
+
+            // 触发传递的事件，修改dataList
+            this.$emit("setDataList", arr)
         },
         
         // 撤销条件时候触发
