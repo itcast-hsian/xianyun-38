@@ -50,9 +50,12 @@ export default {
     data(){
         return {
             // 总数据，包含了 flights， info， options，flights用来渲染航班列表
-            flightsData: {},
-            // 保存当前的分页要渲染的数组
-            dataList: [],
+            flightsData: {
+                flights: []
+            },
+            // 保存当前的分页要渲染的数组,已经在computed里来计算生成
+            //dataList: [],
+
             // 分页的变量
             pageIndex: 1,
             pageSize: 5,
@@ -65,20 +68,30 @@ export default {
         FlightsItem
     },
 
+    computed:{
+        // 保存当前的分页要渲染的数组
+        // ！！computed会监听函数引用所有实例下的属性，一旦属性发生了变化就会再次执行函数，返回新的值
+        dataList(){
+            const arr = this.flightsData.flights.slice(
+                (this.pageIndex - 1 ) * this.pageSize,
+                this.pageIndex * this.pageSize
+            );
+
+            return arr;
+        }
+    },
+
     methods: {
         // 分页切换条数时候触发
-        handleSizeChange(val){},
+        handleSizeChange(val){
+            // 修改显示的条数
+            this.pageSize = val;
+        },
 
         // 切换页数时候触发
         handleCurrentChange(val){
             // 修改当前的页面
             this.pageIndex = val;
-
-            // 得到当前分页要渲染的数组
-            this.dataList = this.flightsData.flights.slice(
-                (val - 1 ) * this.pageSize,
-                val * this.pageSize
-            );
         },
     },
 
@@ -91,8 +104,7 @@ export default {
             // 总数据，包含了 flights， info， options，flights用来渲染航班列表
             const {data} = res;
             this.flightsData = data;
-            // 当前分页渲染的列表
-            this.dataList = this.flightsData.flights.slice(0, 5);
+            
             // 数据的总条数
             this.total = this.flightsData.total;
         })
