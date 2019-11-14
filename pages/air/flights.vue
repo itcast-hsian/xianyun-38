@@ -51,7 +51,8 @@ export default {
             // 总数据，包含了 flights， info， options，flights用来渲染航班列表
             flightsData: {
                 flights: [],
-                info: {}
+                info: {},
+                options: {}
             },
             // 保存当前的分页要渲染的数组,已经在computed里来计算生成
             //dataList: [],

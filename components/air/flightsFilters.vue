@@ -10,32 +10,44 @@
             </el-col>
 
             <el-col :span="4">
+                <!-- 机场选项 -->
                 <el-select size="mini" v-model="airport" placeholder="起飞机场" @change="handleAirport">
                     <el-option
-                    label="白云机场abc"
-                    value="白云机场123"
+                    v-for="(item, index) in data.options.airport"
+                    :key="index"
+                    :label="item"
+                    :value="item"
                     >
                     </el-option>
                 </el-select>
             </el-col>
             <el-col :span="4">
+                <!-- 起飞时间段选项 -->
+                <!-- label：是显示在列表中的字符串, value是选中时候的值，必须是每个选项不一样字符串 -->
                 <el-select size="mini" v-model="flightTimes"  placeholder="起飞时间" @change="handleFlightTimes">
                     <el-option
-                    label="00:00 - 06:00"
-                    value="1"
+                    v-for="(item, index) in data.options.flightTimes"
+                    :key="index"
+                    :label="`${item.from}:00 - ${item.to}:00`"
+                    :value="`${item.from},${item.to}`"
                     >
                     </el-option>
                 </el-select>
             </el-col>
             <el-col :span="4">
+                <!-- 航空公司的选项 -->
                 <el-select size="mini" v-model="company"  placeholder="航空公司" @change="handleCompany">
                     <el-option
-                    label="厦门航空"
-                    value="厦门航空">
+                    v-for="(item, index) in data.options.company"
+                    :key="index"
+                    :label="item"
+                    :value="item"
+                    >
                     </el-option>
                 </el-select>
             </el-col>
             <el-col :span="4">
+                <!-- 机型大小的选项 -->
                 <el-select size="mini" v-model="airSize" placeholder="机型" @change="handleAirSize">
                     <el-option
                     label="大"
@@ -83,7 +95,8 @@ export default {
 
         // 选择出发时间时候触发
         handleFlightTimes(value){
-            
+            // value = 6,12
+            console.log(value)
         },
 
          // 选择航空公司时候触发
