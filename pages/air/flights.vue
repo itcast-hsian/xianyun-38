@@ -90,7 +90,34 @@ export default {
         }
     },
 
+    // 监听路由的变化，在组件被复用使用调用这个路由守卫
+    async beforeRouteUpdate(to, from , next){
+        // 获取航班列表的函数,返回promise
+        await this.getList(to.query)
+        // 必须要调用
+        next();
+    },
+
     methods: {
+        // 获取航班列表的函数，query是5个参数
+        getList(query){
+            // 请求机票列表数据
+            return this.$axios({
+                url: "/airs",
+                params: query
+            }).then(res => {
+                // 总数据，包含了 flights， info， options，flights用来渲染航班列表
+                const {data} = res;
+                this.flightsData = data;
+
+                // 赋值给拷贝的新数据, 这份数据一旦赋值之后不能被修改
+                this.cacheFlightsData = {...data};
+
+                // 数据的总条数
+                this.total = this.flightsData.total;
+            })
+        },
+
         // 分页切换条数时候触发
         handleSizeChange(val){
             // 修改显示的条数
@@ -115,23 +142,8 @@ export default {
     },
 
     mounted(){
-        console.log(123)
-
         // 请求机票列表数据
-        this.$axios({
-            url: "/airs",
-            params: this.$route.query
-        }).then(res => {
-            // 总数据，包含了 flights， info， options，flights用来渲染航班列表
-            const {data} = res;
-            this.flightsData = data;
-
-            // 赋值给拷贝的新数据, 这份数据一旦赋值之后不能被修改
-            this.cacheFlightsData = {...data};
-
-            // 数据的总条数
-            this.total = this.flightsData.total;
-        })
+        this.getList(this.$route.query)
     }
 }
 </script>
