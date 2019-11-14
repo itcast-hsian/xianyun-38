@@ -5,7 +5,7 @@
             <!-- 顶部过滤列表 -->
             <div class="flights-content">
                 <!-- 过滤条件 -->
-                <FlightsFilters/>
+                <FlightsFilters :data="flightsData"/>
                 
                 <!-- 航班头部布局 -->
                 <FlightsListHead/>
@@ -50,7 +50,8 @@ export default {
         return {
             // 总数据，包含了 flights， info， options，flights用来渲染航班列表
             flightsData: {
-                flights: []
+                flights: [],
+                info: {}
             },
             // 保存当前的分页要渲染的数组,已经在computed里来计算生成
             //dataList: [],

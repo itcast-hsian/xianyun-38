@@ -4,9 +4,9 @@
             <!-- 左侧的航班信息 -->
             <el-col :span="8">
                 单程： 
-                广州 - 上海 
+                {{data.info.departCity}} - {{data.info.destCity}} 
                 / 
-                2019-06-17
+                {{data.info.departDate}}
             </el-col>
 
             <el-col :span="4">
@@ -66,6 +66,13 @@ export default {
             flightTimes: "",    // 出发时间
             company: "",        // 航空公司
             airSize: "",        // 机型大小
+        }
+    },
+    props: {
+        // 组件接受flights.vue中flightsData
+        data: {
+            type: Object,
+            default: {}
         }
     },
     methods: {
