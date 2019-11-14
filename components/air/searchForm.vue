@@ -235,6 +235,9 @@ export default {
             // 只要有一个条件不满足，禁止跳转
             if(!valid) return;
 
+            // 保存到vuex的store中
+            this.$store.commit("air/setHistory", this.form);
+
             // 跳转到机票列表页
             this.$router.push({
                 path: "/air/flights",
