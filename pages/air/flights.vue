@@ -5,7 +5,7 @@
             <!-- 顶部过滤列表 -->
             <div class="flights-content">
                 <!-- 过滤条件 -->
-                <FlightsFilters :data="flightsData"/>
+                <FlightsFilters :data="flightsData" @setDataList="setDataList"/>
                 
                 <!-- 航班头部布局 -->
                 <FlightsListHead/>
@@ -95,6 +95,12 @@ export default {
             // 修改当前的页面
             this.pageIndex = val;
         },
+
+        // 传递给子组件修改dataList的事件
+        setDataList(arr){
+            // 这里是有问题的，一旦修改了flightsData,后面的值都会只剩下过滤后
+            this.flightsData.flights = arr;
+        }
     },
 
     mounted(){
