@@ -70,9 +70,16 @@ export default {
         handleSizeChange(val){},
 
         // 切换页数时候触发
-        handleCurrentChange(val){},
+        handleCurrentChange(val){
+            // 修改当前的页面
+            this.pageIndex = val;
 
-
+            // 得到当前分页要渲染的数组
+            this.dataList = this.flightsData.flights.slice(
+                (val - 1 ) * this.pageSize,
+                val * this.pageSize
+            );
+        },
     },
 
     mounted(){
