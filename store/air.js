@@ -1,5 +1,6 @@
 export const state = () => {
     return {
+        // 历史搜素记录
         history: []
     }
 }

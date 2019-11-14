@@ -33,9 +33,7 @@
             </div>
 
             <!-- 侧边栏 -->
-            <div class="aside">
-                <!-- 侧边栏组件 -->
-            </div>
+            <FlightsAside/>
         </el-row>
     </section>
 </template>
@@ -44,6 +42,7 @@
 import FlightsListHead from "@/components/air/flightsListHead"
 import FlightsItem from "@/components/air/flightsItem"
 import FlightsFilters from "@/components/air/flightsFilters"
+import FlightsAside from "@/components/air/flightsAside"
 
 export default {
     data(){
@@ -74,7 +73,8 @@ export default {
     components: {
         FlightsListHead,
         FlightsItem,
-        FlightsFilters
+        FlightsFilters,
+        FlightsAside
     },
 
     computed:{
@@ -115,6 +115,8 @@ export default {
     },
 
     mounted(){
+        console.log(123)
+
         // 请求机票列表数据
         this.$axios({
             url: "/airs",
