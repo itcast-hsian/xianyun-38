@@ -107,6 +107,10 @@ export default {
         setDataList(arr){
             // 这里是有问题的，一旦修改了flightsData,后面的值都会只剩下过滤后
             this.flightsData.flights = arr;
+            // 修改总条数
+            this.total = arr.length;
+            // 把页面设置为1
+            this.pageIndex = 1;
         }
     },
 

@@ -90,13 +90,28 @@ export default {
     methods: {
         // 选择机场时候触发
         handleAirport(value){
-            
+            // 过滤符合条件的航班
+            const arr = this.data.flights.filter(v => {
+                return v.org_airport_name == value;
+            });
+
+            // 触发传递的事件，修改dataList
+            this.$emit("setDataList", arr)
         },
 
         // 选择出发时间时候触发
         handleFlightTimes(value){
             // value = 6,12
-            console.log(value)
+            const [start, end] = value.split(","); // [6,12]
+
+            const arr = this.data.flights.filter(v => {
+                // 切割出发时间的小时
+                const current = v.dep_time.split(":")[0];
+                // 出发小时必须要小于或者等于选中的开始时间，并且小于选中的结束时间
+                return start <= current && current < end;
+            });
+            // 触发传递的事件，修改dataList
+            this.$emit("setDataList", arr)
         },
 
          // 选择航空公司时候触发
