@@ -193,6 +193,8 @@ export default {
         }).then(res => {
             // 保存当前机票信息数据
             this.infoData = res.data;
+            // 保存到store
+            this.$store.commit("air/setInfoData", res.data);
         })
     }
 }
