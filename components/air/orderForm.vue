@@ -44,9 +44,12 @@
             <h2>保险</h2>
             <div>
                 <!-- 循环渲染保险的数据，数据来源于后台 -->
-                <div class="insurance-item">
+                <div 
+                class="insurance-item"
+                 v-for="(item, index) in infoData.insurances"
+                :key="index">
                     <el-checkbox 
-                    label="航空意外险：￥30/份×1  最高赔付260万" 
+                    :label="`${item.type}：￥${item.price}/份×1  最高赔付${item.compensation}`" 
                     border>
                     </el-checkbox> 
                 </div>
@@ -91,7 +94,10 @@ export default {
                     username: "",
                     id: ""
                 }
-            ]
+            ],
+
+            // 当前机票的信息
+            infoData: {}
         }
     },
     methods: {
@@ -118,6 +124,21 @@ export default {
         handleSubmit(){
             
         }
+    },
+
+    mounted(){
+        const {id, seat_xid} = this.$route.query;
+
+        // 请求当前的机票的信息
+        this.$axios({
+            url: "/airs/" + id,
+            params: {
+                seat_xid
+            }
+        }).then(res => {
+            // 保存当前机票信息数据
+            this.infoData = res.data;
+        })
     }
 }
 </script>
