@@ -106,7 +106,7 @@ export default {
            
             // 过滤符合条件的航班
             arr = this.data.flights.filter(v => {
-                 // 先假设所有的数据都是符合条件的
+                 // !!先假设所有的数据都是符合条件的
                 let valid = true;
 
                 // 开始和出发时间段
