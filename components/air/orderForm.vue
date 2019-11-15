@@ -63,11 +63,11 @@
             <div class="contact">
                 <el-form label-width="60px">
                     <el-form-item label="姓名">
-                        <el-input></el-input>
+                        <el-input v-model="form.contactName"></el-input>
                     </el-form-item>
 
                     <el-form-item label="手机">
-                        <el-input placeholder="请输入内容">
+                        <el-input placeholder="请输入内容" v-model="form.contactPhone">
                             <template slot="append">
                             <el-button @click="handleSendCaptcha">发送验证码</el-button>
                             </template>
@@ -75,7 +75,7 @@
                     </el-form-item>
 
                     <el-form-item label="验证码">
-                        <el-input></el-input>
+                        <el-input v-model="form.captcha"></el-input>
                     </el-form-item>
                 </el-form>   
                 <!-- 提交订单 -->
@@ -99,12 +99,12 @@ export default {
                 ],
                 // 保险id集合
                 insurances: [],
-                contactName: "",
-                contactPhone: "",
-                captcha: "",
-                invoice: true,
-                seat_xid: "",
-                air: ""
+                contactName: "",    // 联系人姓名
+                contactPhone: "",   // 联系人电话
+                captcha: "",        // 手机验证码
+                invoice: true,      // 发票，默认false
+                seat_xid: "",       // 座位id
+                air: ""             // 航班id
             },
 
             // 当前机票的信息
@@ -141,8 +141,16 @@ export default {
         },
         
         // 发送手机验证码
-        handleSendCaptcha(){
-            
+        async handleSendCaptcha(){
+            // 判断是否有手机号码
+            if(!this.form.contactPhone){
+                this.$message.error("请输入手机号码")
+                return;
+            }
+
+            // 调用store下actions的发送手机验证码的方法
+            const code = await this.$store.dispatch("user/sendCaptcha", this.form.contactPhone);
+            this.$message.success("模拟的手机验证码是：" + code)
         },
 
         // 提交订单
