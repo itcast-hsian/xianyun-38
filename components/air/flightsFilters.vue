@@ -11,7 +11,7 @@
 
             <el-col :span="4">
                 <!-- 机场选项 -->
-                <el-select size="mini" v-model="airport" placeholder="起飞机场" @change="handleAirport">
+                <el-select size="mini" v-model="airport" placeholder="起飞机场">
                     <el-option
                     v-for="(item, index) in data.options.airport"
                     :key="index"
@@ -24,7 +24,7 @@
             <el-col :span="4">
                 <!-- 起飞时间段选项 -->
                 <!-- label：是显示在列表中的字符串, value是选中时候的值，必须是每个选项不一样字符串 -->
-                <el-select size="mini" v-model="flightTimes"  placeholder="起飞时间" @change="handleFlightTimes">
+                <el-select size="mini" v-model="flightTimes"  placeholder="起飞时间">
                     <el-option
                     v-for="(item, index) in data.options.flightTimes"
                     :key="index"
@@ -36,7 +36,7 @@
             </el-col>
             <el-col :span="4">
                 <!-- 航空公司的选项 -->
-                <el-select size="mini" v-model="company"  placeholder="航空公司" @change="handleCompany">
+                <el-select size="mini" v-model="company"  placeholder="航空公司" >
                     <el-option
                     v-for="(item, index) in data.options.company"
                     :key="index"
@@ -48,7 +48,7 @@
             </el-col>
             <el-col :span="4">
                 <!-- 机型大小的选项 -->
-                <el-select size="mini" v-model="airSize" placeholder="机型" @change="handleAirSize">
+                <el-select size="mini" v-model="airSize" placeholder="机型" >
                     <el-option
                     v-for="(item, index) in airSizeList"
                     :key="index"
@@ -136,56 +136,6 @@ export default {
     },
 
     methods: {
-
-
-        // 选择机场时候触发
-        handleAirport(value){
-            // 过滤符合条件的航班
-            // const arr = this.data.flights.filter(v => {
-            //     return v.org_airport_name == value;
-            // });
-
-            // // 触发传递的事件，修改dataList
-            // this.$emit("setDataList", arr)
-        },
-
-        // 选择出发时间时候触发
-        handleFlightTimes(value){
-            // value = 6,12
-            const [start, end] = value.split(","); // [6,12]
-
-            const arr = this.data.flights.filter(v => {
-                // 切割出发时间的小时
-                const current = v.dep_time.split(":")[0];
-                // 出发小时必须要小于或者等于选中的开始时间，并且小于选中的结束时间
-                return start <= current && current < end;
-            });
-            // 触发传递的事件，修改dataList
-            this.$emit("setDataList", arr)
-        },
-
-         // 选择航空公司时候触发
-        handleCompany(value){
-            // 过滤符合条件的航班
-            const arr = this.data.flights.filter(v => {
-                return v.airline_name == value;
-            });
-
-            // 触发传递的事件，修改dataList
-            this.$emit("setDataList", arr)
-        },
-
-         // 选择机型时候触发
-        handleAirSize(value){
-           // 过滤符合条件的航班
-            const arr = this.data.flights.filter(v => {
-                return v.plane_size == value;
-            });
-
-            // 触发传递的事件，修改dataList
-            this.$emit("setDataList", arr)
-        },
-        
         // 撤销条件时候触发
         handleFiltersCancel(){
             this.airport = "";       // 机场
