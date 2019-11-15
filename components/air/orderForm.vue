@@ -164,10 +164,17 @@ export default {
                 seat_xid
             }
 
+            // 可以自己添加表单验证，如果验证不通过的话不提交
+
+            // 提交订单
             this.$axios({
                 url: "/airorders",
                 method: "POST",
-                data: this.form
+                data: this.form,
+                headers: {
+                    // Bearer属于jwt的token标准
+                   Authorization: "Bearer " + this.$store.state.user.userInfo.token
+                }
             }).then(res => {
                 console.log(res);
             })
