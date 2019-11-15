@@ -82,6 +82,8 @@
                 <el-button type="warning" class="submit" @click="handleSubmit">提交订单</el-button>
             </div>
         </div>
+
+        <span v-show="false">{{allPrice}}</span>
     </div>
 </template>
 
@@ -111,6 +113,28 @@ export default {
             infoData: {}
         }
     },
+
+    computed: {
+        // 计算总金额
+        allPrice(){
+            if(!this.infoData.seat_infos) return;
+            // 总金额
+            let price = 0;
+            // 单价
+            price += this.infoData.seat_infos.org_settle_price;
+            // 基建燃油费
+            price += this.infoData.airport_tax_audlet;
+            // 保险
+            price += this.form.insurances.length * 30;
+            // 乘以人数
+            price *= this.form.users.length;
+            // 保存到store对的allPrice
+            this.$store.commit("air/setAllPrice", price)
+
+            return "";
+        }
+    },
+
     methods: {
         // 添加乘机人
         handleAddUsers(){
