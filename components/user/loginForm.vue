@@ -74,7 +74,9 @@ export default {
                 // 调用actions的方法,this.$store.dispatch
                 await this.$store.dispatch("user/login", this.form);
                 // 跳转到首页
-                this.$router.replace("/");
+                // this.$router.replace("/");
+                this.$router.back();
+
                 // 弹窗提示
                 this.$message.success('登录成功');
             }catch(err){}
