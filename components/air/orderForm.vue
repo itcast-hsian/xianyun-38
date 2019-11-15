@@ -6,7 +6,7 @@
 
                 <!-- 乘机人信息列表，根据人数循环这个div -->
                 <div class="member-info-item" 
-                v-for="(item, index) in users"
+                v-for="(item, index) in form.users"
                 :key="index">
                     <el-form-item label="乘机人类型">
                         <el-input placeholder="姓名" class="input-with-select" v-model="item.username">
@@ -49,6 +49,7 @@
                  v-for="(item, index) in infoData.insurances"
                 :key="index">
                     <el-checkbox 
+                    @change="handleInsurance(item.id)"
                     :label="`${item.type}：￥${item.price}/份×1  最高赔付${item.compensation}`" 
                     border>
                     </el-checkbox> 
@@ -88,13 +89,23 @@
 export default {
     data(){
         return {
-            // 用户列表，至少有一项
-            users: [
-                { 
-                    username: "",
-                    id: ""
-                }
-            ],
+            form: {
+                // 用户列表，至少有一项
+                users: [
+                    { 
+                        username: "",
+                        id: ""
+                    }
+                ],
+                // 保险id集合
+                insurances: [],
+                contactName: "",
+                contactPhone: "",
+                captcha: "",
+                invoice: true,
+                seat_xid: "",
+                air: ""
+            },
 
             // 当前机票的信息
             infoData: {}
@@ -103,7 +114,7 @@ export default {
     methods: {
         // 添加乘机人
         handleAddUsers(){
-            this.users.push({
+            this.form.users.push({
                 username: "",
                 id: ""
             })
@@ -112,7 +123,21 @@ export default {
         // 移除乘机人
         handleDeleteUser(index){
             // slice,splice,split 要区分好
-            this.users.splice(index, 1);
+            this.form.users.splice(index, 1);
+        },
+
+        // 选中保险选项时候触发
+        handleInsurance(id){
+            // 先判断是否已经选中过该保险
+            const index = this.form.insurances.indexOf(id);
+
+            if(index > -1){
+                //如果已经选中了，就要删除该保险
+                 this.form.insurances.splice(index, 1);
+            }else{
+                // 如果没有选中就添加该保险id
+                this.form.insurances.push(id);
+            }
         },
         
         // 发送手机验证码
@@ -122,7 +147,7 @@ export default {
 
         // 提交订单
         handleSubmit(){
-            
+            console.log(this.form.insurances)
         }
     },
 
