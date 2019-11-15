@@ -5,9 +5,11 @@
             <el-form class="member-info">
 
                 <!-- 乘机人信息列表，根据人数循环这个div -->
-                <div class="member-info-item" >
+                <div class="member-info-item" 
+                v-for="(item, index) in users"
+                :key="index">
                     <el-form-item label="乘机人类型">
-                        <el-input placeholder="姓名" class="input-with-select">
+                        <el-input placeholder="姓名" class="input-with-select" v-model="item.username">
                             <el-select 
                             slot="prepend" 
                             value="1" 
@@ -19,7 +21,7 @@
 
                     <el-form-item label="证件类型">
                         <el-input 
-                        placeholder="证件号码"  class="input-with-select">
+                        placeholder="证件号码"  class="input-with-select" v-model="item.id">
                             <el-select 
                             slot="prepend" 
                             value="1"           
@@ -30,7 +32,7 @@
                     </el-form-item>
                     
                     <!-- 删除乘机人，第一个乘机人不显示该按钮 -->
-                    <span class="delete-user" @click="handleDeleteUser()">-</span>
+                    <span class="delete-user" @click="handleDeleteUser(index)">-</span>
                 </div>
             </el-form>
 
@@ -81,15 +83,30 @@
 
 <script>
 export default {
+    data(){
+        return {
+            // 用户列表，至少有一项
+            users: [
+                { 
+                    username: "",
+                    id: ""
+                }
+            ]
+        }
+    },
     methods: {
         // 添加乘机人
         handleAddUsers(){
-            
+            this.users.push({
+                username: "",
+                id: ""
+            })
         },
         
         // 移除乘机人
-        handleDeleteUser(){
-
+        handleDeleteUser(index){
+            // slice,splice,split 要区分好
+            this.users.splice(index, 1);
         },
         
         // 发送手机验证码
