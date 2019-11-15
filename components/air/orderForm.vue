@@ -155,7 +155,22 @@ export default {
 
         // 提交订单
         handleSubmit(){
-            console.log(this.form.insurances)
+            // 修改座位id和航班的id, id:air是声明了别名
+            const {id: air, seat_xid} = this.$route.query;
+
+            this.form = {
+                ...this.form,
+                air,
+                seat_xid
+            }
+
+            this.$axios({
+                url: "/airorders",
+                method: "POST",
+                data: this.form
+            }).then(res => {
+                console.log(res);
+            })
         }
     },
 
