@@ -12,7 +12,7 @@ export default ({$axios, redirect}) => {
         }
 
         // 禁止访问或者没有权限
-        if(statusCode === 403){
+        if( [403, 401].indexOf(statusCode) > -1 ){
             Message.error("请先登录");
             // 跳转到登录页
             redirect("/user/login");
