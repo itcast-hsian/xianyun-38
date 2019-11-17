@@ -32,14 +32,16 @@ import QRCode from "qrcode";
 export default {
     data(){
         return {
-            order: {}
+            order: {},
+            // 定时器
+            timer: null
         }
     },
 
     methods: {
         // 查询付款状态
-        checkPay(data){
-            this.$axios({
+        async checkPay(data){
+            const res = await this.$axios({
                 url:"/airorders/checkpay",
                 method: "POST",
                 data: {
@@ -51,9 +53,17 @@ export default {
                     // Bearer属于jwt的token标准
                     Authorization: "Bearer " + this.$store.state.user.userInfo.token
                 }
-            }).then(res => {
-                console.log(res)
             })
+            const {statusTxt} = res.data;
+
+            if(statusTxt == "支付完成"){
+                this.$alert(statusTxt, "提示", {
+                    type: 'success'
+                });
+                clearInterval(this.timer);
+                this.timer = null;
+            }
+
         }
     },
     mounted(){
@@ -80,7 +90,9 @@ export default {
                 });
 
                 // 支付结果轮询
-                this.checkPay(this.order);
+                this.timer = setInterval(() => {
+                    this.checkPay(this.order);
+                }, 3000);
             })
         }, 1)  
     },
