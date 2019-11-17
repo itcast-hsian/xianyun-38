@@ -200,7 +200,18 @@ export default {
                    Authorization: "Bearer " + this.$store.state.user.userInfo.token
                 }
             }).then(res => {
-                console.log(res);
+                this.$message.success("订单提交成功， 跳转到付款页")
+
+                console.log(res.data)
+
+                // 跳转到付款页
+                this.$router.push({
+                    path: "/air/pay",
+                    query: {
+                        // 付款页需要id获取订单详情
+                        id: res.data.data.id
+                    }
+                })
             })
         }
     },
