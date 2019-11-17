@@ -2,7 +2,7 @@
     <div class="container">
         <div class="main">
             <div class="pay-title">
-                支付总金额 <span class="pay-price">￥ 1000</span>
+                    支付总金额 <span class="pay-price">￥ {{order.price | tofixed}}</span>
             </div>
             <div class="pay-main">
                 <h4>微信支付</h4>
@@ -13,7 +13,7 @@
                     <div class="qrcode">
                         <!-- 二维码 -->
                         <canvas id="qrcode-stage"></canvas>
-                        
+
                         <p>请使用微信扫一扫</p>
                         <p>扫描二维码支付</p>
                     </div>
@@ -28,7 +28,37 @@
 
 <script>
 export default {
-    
+    data(){
+        return {
+            order: {}
+        }
+    },
+    mounted(){
+        // 获取订单id
+        const {id} = this.$route.query;
+
+        // 定时器主要为了等待本地存储把值返回给store，才可以获取到token
+        setTimeout(() => {
+            // 请求订单详情
+            this.$axios({
+                url: "/airorders/" + id,
+                headers: {
+                    // Bearer属于jwt的token标准
+                    Authorization: "Bearer " + this.$store.state.user.userInfo.token
+                }
+            }).then(res => {
+                
+                // 赋值给订单详情
+                this.order = res.data;
+            })
+        }, 1)
+    },
+
+    filters: {
+        tofixed(value){
+            return Number(value || 0).toFixed(2);
+        }
+    }
 }
 </script>
 
