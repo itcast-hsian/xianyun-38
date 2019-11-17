@@ -1,18 +1,13 @@
 <template>
   <div style="padding: 50px;">
 
-    <div v-for="(item, index) in list" :key="index">
-      {{item.name}}
-
-      <div v-for="(item, index) in item.children" :key="index">
-        {{item.name}}
-      </div>
-    </div>
+    <Item :list="list"/>
 
   </div>
 </template>
 
 <script>
+import Item from "@/components/post/item"
 export default {
     // 递归的重点在于找到数据的规则
     data(){
@@ -25,7 +20,7 @@ export default {
               {
                 name: "男装",
                 children: [
-                  { name: "上衣" },
+                  { name: "上衣" , children: [ {name: "衬衫"} ]},
                   { name: "裤子" }
                 ]
               },
@@ -48,6 +43,10 @@ export default {
           }
         ]
       }
+    },
+
+    components: {
+      Item
     }
 }
 </script>
