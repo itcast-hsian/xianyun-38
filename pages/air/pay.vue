@@ -27,6 +27,8 @@
 </template>
 
 <script>
+import QRCode from "qrcode";
+
 export default {
     data(){
         return {
@@ -47,11 +49,16 @@ export default {
                     Authorization: "Bearer " + this.$store.state.user.userInfo.token
                 }
             }).then(res => {
-                
                 // 赋值给订单详情
                 this.order = res.data;
+                // 生成二维码
+                const canvas = document.querySelector("#qrcode-stage");
+                // 第一个参数是canvas dom元素, 要生成二位的连接
+                QRCode.toCanvas(canvas, this.order.payInfo.code_url, {
+                    width: 200
+                });
             })
-        }, 1)
+        }, 1)  
     },
 
     filters: {
